@@ -1,24 +1,14 @@
-import express from "express";
 import findPort from "./lib/findPort";
-import router from "./routes"
+import Peer from "./services/peer";
 
-async function startServer(PORT: number) {
+const PORT = parseInt(process.env.PORT || "3000")
+
+async function main() {
     const port = await findPort(PORT);
-    const app = express();
-
-    app.use(express.json());
-    app.use(router);
-
-    app.listen(port, async () => {
-        console.log("Servidor iniciado na porta: " + port);
-
-        if (port !== 3000) {
-            await fetch("http://localhost:3000/connect");
-        } else {
-            // await fetch("http://localhost:3001/connect")
-        }
-    });
-
+    const peer = new Peer(port);
+    process.argv.slice(2).forEach((address) => {
+        peer.connect(address)
+    })
 }
 
-startServer(3000);
+main()
