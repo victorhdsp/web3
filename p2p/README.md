@@ -1,46 +1,40 @@
-# Sistema p2p
+# P2P
 
-O objetivo é criar um sistema de conexão p2p baseado na minha esquisofrenia e no entendimento que tive do funcionamento de um nas minhas pesquisas na internet.
+<img src="./readme-hero.png" alt="Apresentação visual do funcionamento da Web 1, 2 e 3. Sendo a 1 varios pontos convergindo a um unico lugar, a 2 varios pontos convergindo a varios pontos especificos e a 3 varios pontos convergindo entre si.">
 
-## Funcionamento
+> Conexão peer to peer é uma conexão entre usuários e sem a necessidade de um servidor principal.
 
-Para o funcionamento do sistema pensei na seguinte coisa, todo nó conectado é um "servidor/cliente", e funciona da seguinte forma:
+> Nesse projeto não estou utilizando nenhum protocólo especifico, fiz basicamente um servidor de eventos onde cada conexão é servidor e cliente, quando ele se conecta a um servidor, esse o cliente desse servidor se conecta ao servidor do cliente que se conectou.
 
-Você tem uma lista de ips, ao conectar com um outro nó você ganha a lista dele e salva ela em uma lista temporária ignorando os ips que você já tem conectado.
+### Ajustes e melhorias
 
-ex: Você e ele teriam respectivamente as listas f*["123", "124", "125"] e f*["223", "224", "125"], ao se conectarem sua lista ficaria t*["223", "224"].
+O projeto ainda está em desenvolvimento e as próximas atualizações serão voltadas para as seguintes tarefas:
 
-Com essa lista temporária, seu nó vai testar cada um dos ips, caso consiga conexão então ele primeiramente adiciona o ip em uma lista de ips confirmados e obtem a lista dele, concatenando os ips a sua lista temporária e ignorando os ips que você já tem conectado ou que já estão la lista temporária.
+- [x] Criando um nó.
+- [X] Conectando a um nó.
 
-ex: Você teria sua listas de fixos e temporários, você tentou conectado ao ip "223" e conseguiu conexão, ele por sua vez tinha os ips f*["123", "333", "224"], agora suas listas ficariam f*["123", "124", "125", "223"] e t*["224", "333"].
+## 💻 Pré-requisitos
 
-Caso a conexão não seja possível ele vai adicionar a uma terceira lista de ips inativos.
+Antes de começar, verifique se você atendeu aos seguintes requisitos:
 
-ex: Nesse caso vamos supor que "224" é um ip inativo, suas listas ficariam então f*["123", "124", "125", "223"], t*["333"], i*["224"].
+- Você precisa da versão `20.15.1` ou superior do `Node.js`
+- Você precisa da versão `10.7.0` ou superior do `npm`
 
-Ao terminar todas as conexões possiveis pelos ips temporários e a lista estiver zerada, então ele vai avisar sobre os ips inativos através de um "evento de verificação de existencia", um evento nesse caso consiste em avisar a todos os ips na lista de fixos para fazer alguma coisa, nesse caso um "evento de verificação de existencia" seria pedir que verifiquem se o ip ainda existe e está ativo.
+## 🚀 Instalando "p2p"
 
-* Ao receber o pedido de verificação, ele vai verificar se tem esse ip na sua lista de fixos, caso sim ele vai fazer um teste para se conectar e se não conseguir conexão, então ele vai repassar o "evento de verificação de existencia".
-* Caso ele consiga conexão ele vai avisar o nó que mandou a mensagem que ele conseguiu se conectar portanto aquela alteração não deve ser feita.
+Para instalar o "p2p", siga estas etapas:
 
-Seguindo a lógica dos eventos, o compartilhar uma informação é basicamente criar um evento avisando para que todos modifiquem a informação tambem.
+Linux e macOS:
 
-* A informação modificada precisa ser previamente codada e seguir uma regra específica de modificação para verificar se essa alteração realmente deve ser feita.
+```
+$ npm install
+$ PORT=<Porta desse nó> npm run dev <IP e porta que vai se conectar>
+```
 
-## Outputs
-/connect - Conectar a novos nós e obter a lista de nós conectados.
-/insertBlock - Inserir um novo bloco na blockchain e propagar a informação para outros nós.
-/getChain - Obter a cadeia de blocos atual de um nó.
-/getPeers - Obter a lista de peers conectados a um nó específico.
-/validateTransaction - Validar e inserir transações no pool de transações pendentes.
-/broadcast - Propagar mensagens ou informações entre os nós conectados.
-/getTransactions - Obter transações pendentes.
-/mineBlock - Iniciar o processo de mineração em um nó.
+## ☕ Usando "p2p"
 
-## Funcionalidades
-[] Conectar a um nó
-[] Pegar lista de um nó
-[] Remover um nó da lista
-[] Sistema de criar eventos
-[] Sistema de executar eventos
-[] Evento: "Verificação de existencia"
+Não tem uma documentação mas você pode se conectar a um servidor enviando ele como argumento da aplicação e definir a porta que vai ser criada pelo ".env".
+
+```
+PORT=<.env> npm run dev <Argumento da aplicação>
+```
